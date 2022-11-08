@@ -45,14 +45,14 @@ interface HookReturnType {
 interface Props {
   trigger: {
     keyCode: number;
-    shiftKey: boolean;
-    ctrlKey: boolean;
-    metaKey: boolean;
+    shiftKey?: boolean;
+    ctrlKey?: boolean;
+    metaKey?: boolean;
   };
-  onStart: (hookObject: HookReturnType) => void;
-  onCancel: (hookObject: HookReturnType) => void;
-  onType: (hookObject: HookReturnType) => void;
-  endTrigger: (resetState: () => void) => void;
+  onStart?: (hookObject: HookReturnType) => void;
+  onCancel?: (hookObject: HookReturnType) => void;
+  onType?: (hookObject: HookReturnType) => void;
+  endTrigger?: (resetState: () => void) => void;
   ref: React.MutableRefObject<HTMLTextAreaElement | null>;
 }
 
@@ -90,6 +90,11 @@ const useInputTrigger = ({ ref, ...props }: Props) => {
     number | undefined
   >();
 
+  const resetState = useCallback(() => {
+    setTriggered(false);
+    setTriggerStartPosition(undefined);
+  }, []);
+
   const handleTrigger = useCallback(
     (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (!ref.current) {
@@ -111,7 +116,7 @@ const useInputTrigger = ({ ref, ...props }: Props) => {
           setTriggered(true);
           setTriggerStartPosition(selectionStart + 1);
           setTimeout(() => {
-            onStart(getHookObject("start", ref.current!));
+            onStart && onStart(getHookObject("start", ref.current!));
           }, 0);
           return null;
         }
@@ -124,12 +129,13 @@ const useInputTrigger = ({ ref, ...props }: Props) => {
           setTriggered(false);
           setTriggerStartPosition(undefined);
           setTimeout(() => {
-            onCancel(getHookObject("cancel", ref.current!));
+            onCancel && onCancel(getHookObject("cancel", ref.current!));
           }, 0);
         }
 
         setTimeout(() => {
-          onType(getHookObject("typing", ref.current!, triggerStartPosition));
+          onType &&
+            onType(getHookObject("typing", ref.current!, triggerStartPosition));
         }, 0);
       }
 
@@ -138,7 +144,7 @@ const useInputTrigger = ({ ref, ...props }: Props) => {
     [triggered, triggerStartPosition]
   );
 
-  return handleTrigger;
+  return { handleTrigger, resetState };
 };
 
 // return <textarea onKeyDown={(e) => {e.currentTarget.selection}}></textarea>;

@@ -1,7 +1,7 @@
 {
   "name": "@builtview/use-input-trigger",
   "description": "React hook for handling character triggers inside textareas and input fields. 🐼",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
