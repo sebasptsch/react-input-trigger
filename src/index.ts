@@ -66,7 +66,7 @@ const getHookObject = (
   const result: HookReturnType = {
     hookType: type,
     cursor: {
-      selectionStart: element.selectionStart,
+      selectionStart: startPoint || element.selectionStart,
       selectionEnd: element.selectionEnd,
       top: caret.top,
       left: caret.left,
