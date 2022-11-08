@@ -84,7 +84,7 @@ const getHookObject = (
   return result;
 };
 
-const useInputTrigger = ({ ref, ...props }: Props) => {
+export const useInputTrigger = ({ ref, ...props }: Props) => {
   const [triggered, setTriggered] = useState<boolean>(false);
   const [triggerStartPosition, setTriggerStartPosition] = useState<
     number | undefined
@@ -146,7 +146,5 @@ const useInputTrigger = ({ ref, ...props }: Props) => {
 
   return { handleTrigger, resetState };
 };
-
-// return <textarea onKeyDown={(e) => {e.currentTarget.selection}}></textarea>;
 
 export default useInputTrigger;
