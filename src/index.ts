@@ -29,7 +29,7 @@ import getCaretCoordinates from "textarea-caret";
 //   elementRef: null,
 // };
 
-interface HookReturnType {
+export interface Metadata {
   hookType: "cancel" | "typing" | "start";
   cursor: {
     selectionStart: number;
@@ -49,9 +49,9 @@ interface Props {
     ctrlKey?: boolean;
     metaKey?: boolean;
   };
-  onStart?: (hookObject: HookReturnType) => void;
-  onCancel?: (hookObject: HookReturnType) => void;
-  onType?: (hookObject: HookReturnType) => void;
+  onStart?: (hookObject: Metadata) => void;
+  onCancel?: (hookObject: Metadata) => void;
+  onType?: (hookObject: Metadata) => void;
   endTrigger?: (resetState: () => void) => void;
   ref: React.MutableRefObject<HTMLTextAreaElement | null>;
 }
@@ -63,7 +63,7 @@ const getHookObject = (
 ) => {
   const caret = getCaretCoordinates(element, element.selectionEnd);
 
-  const result: HookReturnType = {
+  const result: Metadata = {
     hookType: type,
     cursor: {
       selectionStart: startPoint || element.selectionStart,
